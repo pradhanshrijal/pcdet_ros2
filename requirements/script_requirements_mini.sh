@@ -22,3 +22,8 @@ echo "source ${IN_SSI_PATH}/scripts/setup/cuda_paths.sh ${IN_CUDA_VERSION}" >> /
 
 # Setup PCDet Paths
 echo "source ${IN_SSI_PATH}/git_pkgs/ros_pkgs/pcdet_ws/src/pcdet_ros2/scripts/export_docker_pcdet.sh" >> /home/${IN_USERNAME}/.bashrc
+
+source ${IN_SSI_PATH}/git_pkgs/ros_pkgs/pcdet_ws/src/pcdet_ros2/scripts/install_pcdet_pha.sh ${IN_USERNAME} ${IN_SSI_PATH} ${IN_ROS_VERSION}
+
+# Source pcdet_ros2
+echo "source ${IN_SSI_PATH}/git_pkgs/ros_pkgs/pcdet_ws/install/setup.bash" >> /home/${IN_USERNAME}/.bashrc
