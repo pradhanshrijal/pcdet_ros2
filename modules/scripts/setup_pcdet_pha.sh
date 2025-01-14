@@ -8,6 +8,8 @@ PHA_PARENT=$1
 PHA_PARENT="${PHA_PARENT:=/home/${USER}/schreibtisch}"
 PHA_DB=$2
 PHA_DB="${PHA_DB:=github.com}"
+PCDET_PARENT=$3
+PCDET_PARENT="${PCDET_PARENT:=mm_ws}"
 #
 
 # Install Requirements
@@ -48,16 +50,16 @@ fi
 #
 
 # PHA pcdet_ros2 Main Folder
-cd ${SSI_PATH}/git_pkgs/ros_pkgs
+cd ${SSI_PATH}/git_pkgs/ros_pkgs/
 
-if [ ! -d pcdet_ws ]; then
-    mkdir -p pcdet_ws/src
-    echo "Setup PHA pcdet_ws."
+if [ ! -d ${PCDET_PARENT} ]; then
+    mkdir -p ${PCDET_PARENT}/src
+    echo "Setup PHA ${PCDET_PARENT}."
 else
-    echo "PHA pcdet_ws already set."
+    echo "PHA ${PCDET_PARENT} already set."
 fi
 
-cd pcdet_ws/src
+cd ${PCDET_PARENT}/src
 
 if [ ! -d pcdet_ros2 ]; then
     git clone https://${PHA_DB}/pradhanshrijal/pcdet_ros2 --recursive
@@ -68,7 +70,7 @@ fi
 
 if [[ -z "${PCDET_PHA}" ]]; then
     echo "# PCDET" >> /home/${USER}/.bashrc
-    echo "source ${SSI_PATH}/git_pkgs/ros_pkgs/pcdet_ws/src/pcdet_ros2/scripts/export_pcdet.sh" >> /home/${USER}/.bashrc
+    echo "source ${SSI_PATH}/git_pkgs/ros_pkgs/${PCDET_PARENT}/src/pcdet_ros2/scripts/export_pcdet.sh" >> /home/${USER}/.bashrc
     source /home/${USER}/.bashrc
     echo "Setup PCDET PHA Path: ${PCDET_PHA}"
 else
@@ -141,7 +143,7 @@ fi
 ##
 
 ## ROS 2 Numpy 
-cd ${SSI_PATH}/git_pkgs/ros_pkgs/pcdet_ws/src/
+cd ${SSI_PATH}/git_pkgs/ros_pkgs/${PCDET_PARENT}/src/
 if [ ! -d ros2_numpy ]; then
     git clone https://github.com/Box-Robotics/ros2_numpy -b humble
     echo "Setup ros2_numpy"

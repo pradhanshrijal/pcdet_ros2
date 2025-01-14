@@ -1,2 +1,0 @@
-wget
-ros-humble-ament-cmake-nose
