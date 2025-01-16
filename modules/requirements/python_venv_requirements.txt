@@ -1,11 +1,11 @@
-numpy
+numpy==1.26.0
 llvmlite
 numba
 torch==2.0.1
 torchvision==0.15.2
 torchaudio==2.0.2
 setuptools==69.5.1
-tensorflow
+tensorflow==2.18.0
 tensorboardX
 easydict
 pyyaml
