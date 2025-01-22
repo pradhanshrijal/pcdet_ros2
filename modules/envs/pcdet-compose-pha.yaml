@@ -7,7 +7,7 @@ services:
   pcdet-user:
     image: ${DOC_IMG}:${DOC_TAG}
     build: 
-      context: ${PCDET_SOURCE_DIR}
+      context: ${PHA_HOME}
       dockerfile: ${DOCKERFILE_PATH}
       no_cache: true
       args:
@@ -21,12 +21,14 @@ services:
         - APT_GET_REQUIREMENTS_FILE=${APT_GET_REQUIREMENTS_FILE}
         - PYTHON_REQUIREMENTS_FILE=${PYTHON_REQUIREMENTS_FILE}
         - SCRIPT_REQUIREMENTS_FILE=${SCRIPT_REQUIREMENTS_FILE}
+        - IN_SSI_PATH=${IN_SSI_PATH}
+        - IN_SCRIPTS_PATH=${IN_SCRIPTS_PATH}
         - USER_REQUIREMENTS_PATH=${USER_REQUIREMENTS_PATH}
-        - IN_ROS_WS=${IN_ROS_WS}
+        - SOURCE_CODE_PATH=${SOURCE_CODE_PATH}
         - IN_ROS_VERSION=${IN_ROS_VERSION}
     container_name: ${CONT_NAME}
     env_file:
-      - ${ENV_FILE_NAME}.env
+      - ${PHA_ENV_FILE}.env
     network_mode: host
     runtime: nvidia
     privileged: true
@@ -50,7 +52,9 @@ services:
               capabilities: [gpu]
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
-      - ${PCDET_SOURCE_DIR}/checkpoints:/home/${IN_USERNAME}/${IN_ROS_WS}/src/pcdet_ros2/checkpoints
+      - ${SSI_PATH}:${IN_SSI_PATH}
+      - /media/${IN_USERNAME}:/media/${IN_USERNAME}
+      - /dev:/dev
     tty: true
     stdin_open: true
     #entrypoint: [ "/bin/bash", "-c" ]

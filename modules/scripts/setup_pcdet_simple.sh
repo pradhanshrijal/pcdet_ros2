@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Setup PCDET with PHA
+# Setup PCDET with PHA but simpler
 # Sample: source setup_pcdet.sh /home/pha/schreibtisch github.com mm_ws
 
 # Variables
@@ -13,7 +13,7 @@ PCDET_PARENT="${PCDET_PARENT:=mm_ws}"
 #
 
 # Install Requirements
-sudo apt install python3 python3-pip x11-xserver-utils -y
+sudo apt install python3 python3-pip -y
 python3 -m pip install gdown==4.6.1
 #
 
@@ -59,7 +59,7 @@ else
     echo "PHA ${PCDET_PARENT} already set."
 fi
 
-cd ${SSI_PATH}/git_pkgs/ros_pkgs/${PCDET_PARENT}/src
+cd ${PCDET_PARENT}/src
 
 if [ ! -d pcdet_ros2 ]; then
     git clone https://${PHA_DB}/pradhanshrijal/pcdet_ros2 --recursive
@@ -79,28 +79,7 @@ fi
 #
 
 # pcdet_ros2 weights
-
-## Weights Path
-cd ${SSI_PATH}/files
-
-if [ ! -d datasets ]; then
-    mkdir datasets
-    echo "Setup Dataset Path: ${SSI_PATH}/files/datasets"
-else
-    echo "Dataset Path already set: ${SSI_PATH}/files/datasets"
-fi
-
-cd datasets
-
-if [ ! -d pcdet_data ]; then
-    mkdir pcdet_data
-    echo "AW: Setup Autoware Dataset Path: ${SSI_PATH}/files/datasets/pcdet_data"
-else
-    echo "AW: Autoware Dataset Path already set: ${SSI_PATH}/files/datasets/pcdet_data"
-fi
-##
-
-cd pcdet_data
+cd ${PCDET_PHA}/checkpoints
 
 ## PV-RCNN
 if [ ! -f pv_rcnn_8369.pth ]; then
@@ -132,7 +111,7 @@ fi
 # Dependencies
 
 ## OpenPCDet
-cd ${SSI_PATH}/git_pkgs/ros_pkgs/${PCDET_PARENT}/src/pcdet_ros2/modules
+cd ${SSI_PATH}/git_pkgs/Softwares/py_sw
 if [ ! -d OpenPCDet ]; then
     git clone https://github.com/open-mmlab/OpenPCDet
     echo "Setup OpenPCDet"

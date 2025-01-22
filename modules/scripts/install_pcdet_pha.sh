@@ -20,7 +20,7 @@ echo "source /home/${IN_USERNAME}/ros2_ws/venv/bin/activate" >> /home/${IN_USERN
 
 # Install OpenPCDet
 python3 -m pip install -r ${IN_SSI_PATH}/git_pkgs/ros_pkgs/mm_ws/src/pcdet_ros2/modules/requirements/python_venv_requirements.txt
-cd ${IN_SSI_PATH}/git_pkgs/Softwares/py_sw/OpenPCDet
+cd ${IN_SSI_PATH}/git_pkgs/ros_pkgs/mm_ws/src/pcdet_ros2/modules/OpenPCDet
 python3 setup.py develop
 
 source /home/${IN_USERNAME}/.bashrc

@@ -1,0 +1,10 @@
+*
+!.gitignore
+!docker
+!docker/*
+!envs
+!envs/*
+!requirements
+!requirements/*
+!scripts
+!scripts/*

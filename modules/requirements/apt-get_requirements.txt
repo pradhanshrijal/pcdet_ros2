@@ -1,3 +1,4 @@
 wget
-ros-humble-ament-cmake-nose
 tmux
+python3
+python3-pip
