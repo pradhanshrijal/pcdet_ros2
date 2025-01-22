@@ -8,8 +8,16 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PCDET_SOURCE_DIR="$(dirname "$(dirname "$SCRIPT_DIR")")"
 
 # Install Requirements
-sudo apt install python3 python3-pip -y
+sudo apt install python3 python3-pip git -y
 python3 -m pip install gdown==4.6.1
+cd ${PCDET_SOURCE_DIR}/modules/submodules
+if [ ! -d OpenPCDet ]; then
+    git clone https://github.com/open-mmlab/OpenPCDet
+fi
+
+if [ ! -d ros2_numpy ]; then
+    git clone https://github.com/Box-Robotics/ros2_numpy -b humble
+fi
 #
 
 # pcdet_ros2 weights

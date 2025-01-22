@@ -14,21 +14,11 @@ echo -e "\n# Setup" >> /home/${IN_USERNAME}/.bashrc
 echo "export USER=${IN_USERNAME}" >> /home/${IN_USERNAME}/.bashrc
 source /home/${IN_USERNAME}/.bashrc
 
-# Download Packages
-mkdir -p /home/${IN_USERNAME}/${IN_ROS_WS}/src
-cd /home/${IN_USERNAME}/${IN_ROS_WS}/src
-
-git clone https://bitbucket.org/pradhanshrijal/pcdet_ros2 --recursive -b pha-minor-update
-git clone https://github.com/Box-Robotics/ros2_numpy -b humble
-
-cd /home/${IN_USERNAME}/${IN_ROS_WS}/src/pcdet_ros2/modules
-git clone https://github.com/open-mmlab/OpenPCDet
-
 # CUDA Paths
 echo "source /home/${IN_USERNAME}/${IN_ROS_WS}/src/pcdet_ros2/modules/scripts/secondary/cuda_paths.sh ${IN_CUDA_VERSION}" >> /home/${IN_USERNAME}/.bashrc 
 
 # Setup PCDet Paths
-PCDET_ROOT=/home/${IN_USERNAME}/${IN_ROS_WS}/src/pcdet_ros2/modules/OpenPCDet
+PCDET_ROOT=/home/${IN_USERNAME}/${IN_ROS_WS}/src/pcdet_ros2/modules/submodules/OpenPCDet
 echo "export PCDET_ROOT=${PCDET_ROOT}" >> /home/${IN_USERNAME}/.bashrc
 echo "export PYTHONPATH=$PYTHONPATH:${PCDET_ROOT}:${PCDET_ROOT}/venv/lib/python3.10/site-packages/" >> /home/${IN_USERNAME}/.bashrc
 
@@ -78,10 +68,11 @@ echo "source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash" >> /hom
 echo -e "\n# Venv" >> /home/${IN_USERNAME}/.bashrc
 echo "source /home/${IN_USERNAME}/${IN_ROS_WS}/venv/bin/activate" >> /home/${IN_USERNAME}/.bashrc
 source /home/${IN_USERNAME}/.bashrc
+source /home/${IN_USERNAME}/${IN_ROS_WS}/venv/bin/activate
 
 # Install OpenPCDet
 python3 -m pip install -r /home/${IN_USERNAME}/${IN_ROS_WS}/src/pcdet_ros2/modules/requirements/python_venv_requirements.txt
-cd /home/${IN_USERNAME}/${IN_ROS_WS}/src/pcdet_ros2/modules/OpenPCDet
+cd /home/${IN_USERNAME}/${IN_ROS_WS}/src/pcdet_ros2/modules/submodules/OpenPCDet
 python3 setup.py develop
 
 cd /home/${IN_USERNAME}

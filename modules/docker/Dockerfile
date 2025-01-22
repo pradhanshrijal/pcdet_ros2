@@ -47,11 +47,10 @@ RUN groupadd --gid $GID $IN_USERNAME \
 USER ${IN_USERNAME}
 WORKDIR "/home/${IN_USERNAME}"
 
-## Copy Scripts
-RUN mkdir tmp
-COPY ${USER_REQUIREMENTS_PATH}/${APT_GET_REQUIREMENTS_FILE} tmp/
-COPY ${USER_REQUIREMENTS_PATH}/${PYTHON_REQUIREMENTS_FILE} tmp/
-COPY ${USER_REQUIREMENTS_PATH}/${SCRIPT_REQUIREMENTS_FILE} tmp/
+## Copy Softwares
+RUN mkdir -p /home/${IN_USERNAME}/${IN_ROS_WS}/src/pcdet_ros2
+COPY . /home/${IN_USERNAME}/${IN_ROS_WS}/src/pcdet_ros2
+RUN ["/bin/bash", "-c", "sudo chown -R ${IN_USERNAME}:${IN_USERNAME} /home/${IN_USERNAME}/${IN_ROS_WS}/src/pcdet_ros2"]
 ##
 
 # End - New User
@@ -61,22 +60,21 @@ COPY ${USER_REQUIREMENTS_PATH}/${SCRIPT_REQUIREMENTS_FILE} tmp/
 ## Setup apt-get
 RUN sudo apt-get update
 RUN sudo apt-get install --no-install-recommends -y checkinstall
-RUN xargs sudo apt-get install --no-install-recommends -y < tmp/${APT_GET_REQUIREMENTS_FILE}
+RUN xargs sudo apt-get install --no-install-recommends -y < /home/${IN_USERNAME}/${IN_ROS_WS}/src/pcdet_ros2/${USER_REQUIREMENTS_PATH}/${APT_GET_REQUIREMENTS_FILE}
 ##
 
 ## Setup Python
 RUN python3 -m pip install --upgrade pip
-RUN python3 -m pip install -r tmp/${PYTHON_REQUIREMENTS_FILE}
+RUN python3 -m pip install -r /home/${IN_USERNAME}/${IN_ROS_WS}/src/pcdet_ros2/${USER_REQUIREMENTS_PATH}/${PYTHON_REQUIREMENTS_FILE}
 ##
 
 # End - Setup Programmes
 
 # Install based on scripts
 RUN ["/bin/bash", "-c", "source /home/${IN_USERNAME}/.bashrc"]
-RUN ["/bin/bash", "-c", "source tmp/${SCRIPT_REQUIREMENTS_FILE} ${IN_USERNAME} ${IN_ROS_WS} ${IN_ROS_VERSION} ${IN_CUDA_VERSION_NUMBER}"]
+RUN ["/bin/bash", "-c", "source /home/${IN_USERNAME}/${IN_ROS_WS}/src/pcdet_ros2/${USER_REQUIREMENTS_PATH}/${SCRIPT_REQUIREMENTS_FILE} ${IN_USERNAME} ${IN_ROS_WS} ${IN_ROS_VERSION} ${IN_CUDA_VERSION_NUMBER}"]
 # End - Install based on scripts
 
 # Remove Cache
 RUN ["/bin/bash", "-c", "rm -rf /home/${IN_USERNAME}/.cache/*"]
-RUN ["/bin/bash", "-c", "rm -rf tmp"]
 #

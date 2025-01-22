@@ -4,7 +4,7 @@
 version: '3'
 
 services:
-  pcdet-user:
+  pcdet-docker:
     image: ${DOC_IMG}:${DOC_TAG}
     build: 
       context: ${PCDET_SOURCE_DIR}
@@ -48,9 +48,6 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
-    volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
-      - ${PCDET_SOURCE_DIR}/checkpoints:/home/${IN_USERNAME}/${IN_ROS_WS}/src/pcdet_ros2/checkpoints
     tty: true
     stdin_open: true
     #entrypoint: [ "/bin/bash", "-c" ]
