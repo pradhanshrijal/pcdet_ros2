@@ -1,13 +1,15 @@
 #!/bin/bash
 
-# Setup Carlaware
-# Sample: source setup_cwr.sh /home/pha/schreibtisch
+# Setup PCDET with PHA but simpler
+# Sample: source setup_pcdet.sh /home/pha/schreibtisch github.com mm_ws
 
 # Variables
 PHA_PARENT=$1
 PHA_PARENT="${PHA_PARENT:=/home/${USER}/schreibtisch}"
 PHA_DB=$2
 PHA_DB="${PHA_DB:=github.com}"
+PCDET_PARENT=$3
+PCDET_PARENT="${PCDET_PARENT:=mm_ws}"
 #
 
 # Install Requirements
@@ -37,7 +39,7 @@ fi
 cd pha_docker_files
 
 if [[ -z "${PHA_HOME}" ]]; then
-    echo "# PHA" >> /home/${USER}/.bashrc
+    echo -e "\n# PHA" >> /home/${USER}/.bashrc
     echo "source ${PHA_PARENT}/pha_docker_files/docker_share/scripts/setup/export_pha.sh" >> /home/${USER}/.bashrc
     echo 'export PATH="${HOME}/.local/bin:$PATH"' >> /home/${USER}/.bashrc
     source /home/${USER}/.bashrc
@@ -48,16 +50,16 @@ fi
 #
 
 # PHA pcdet_ros2 Main Folder
-cd ${SSI_PATH}/git_pkgs/ros_pkgs
+cd ${SSI_PATH}/git_pkgs/ros_pkgs/
 
-if [ ! -d pcdet_ws ]; then
-    mkdir -p pcdet_ws/src
-    echo "Setup PHA pcdet_ws."
+if [ ! -d ${PCDET_PARENT} ]; then
+    mkdir -p ${PCDET_PARENT}/src
+    echo "Setup PHA ${PCDET_PARENT}."
 else
-    echo "PHA pcdet_ws already set."
+    echo "PHA ${PCDET_PARENT} already set."
 fi
 
-cd pcdet_ws/src
+cd ${PCDET_PARENT}/src
 
 if [ ! -d pcdet_ros2 ]; then
     git clone https://${PHA_DB}/pradhanshrijal/pcdet_ros2 --recursive
@@ -67,8 +69,8 @@ else
 fi
 
 if [[ -z "${PCDET_PHA}" ]]; then
-    echo "# PCDET" >> /home/${USER}/.bashrc
-    echo "source ${SSI_PATH}/git_pkgs/ros_pkgs/pcdet_ws/src/pcdet_ros2/scripts/export_pcdet.sh" >> /home/${USER}/.bashrc
+    echo -e "\n# PCDET" >> /home/${USER}/.bashrc
+    echo "source ${SSI_PATH}/git_pkgs/ros_pkgs/${PCDET_PARENT}/src/pcdet_ros2/modules/scripts/export_pcdet.sh" >> /home/${USER}/.bashrc
     source /home/${USER}/.bashrc
     echo "Setup PCDET PHA Path: ${PCDET_PHA}"
 else
@@ -77,28 +79,7 @@ fi
 #
 
 # pcdet_ros2 weights
-
-## Weights Path
-cd ${SSI_PATH}/files
-
-if [ ! -d datasets ]; then
-    mkdir datasets
-    echo "Setup Dataset Path: ${SSI_PATH}/files/datasets"
-else
-    echo "Dataset Path already set: ${SSI_PATH}/files/datasets"
-fi
-
-cd datasets
-
-if [ ! -d pcdet_data ]; then
-    mkdir pcdet_data
-    echo "AW: Setup Autoware Dataset Path: ${SSI_PATH}/files/datasets/pcdet_data"
-else
-    echo "AW: Autoware Dataset Path already set: ${SSI_PATH}/files/datasets/pcdet_data"
-fi
-##
-
-cd pcdet_data
+cd ${PCDET_PHA}/checkpoints
 
 ## PV-RCNN
 if [ ! -f pv_rcnn_8369.pth ]; then
@@ -141,7 +122,7 @@ fi
 ##
 
 ## ROS 2 Numpy 
-cd ${SSI_PATH}/git_pkgs/ros_pkgs/pcdet_ws/src/
+cd ${SSI_PATH}/git_pkgs/ros_pkgs/${PCDET_PARENT}/src/
 if [ ! -d ros2_numpy ]; then
     git clone https://github.com/Box-Robotics/ros2_numpy -b humble
     echo "Setup ros2_numpy"
