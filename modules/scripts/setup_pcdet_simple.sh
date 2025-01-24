@@ -111,7 +111,7 @@ fi
 # Dependencies
 
 ## OpenPCDet
-cd ${SSI_PATH}/git_pkgs/Softwares/py_sw
+cd ${SSI_PATH}/git_pkgs/ros_pkgs/${PCDET_PARENT}/src/pcdet_ros2/modules
 if [ ! -d OpenPCDet ]; then
     git clone https://github.com/open-mmlab/OpenPCDet
     echo "Setup OpenPCDet"
