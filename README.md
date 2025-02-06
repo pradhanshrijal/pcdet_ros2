@@ -61,6 +61,7 @@ colcon build --symlink-install --packages-select ros2_numpy pcdet_ros2
 
 **<u>Download the weights</u>**
 <br>Example:
+
 - Download the PV-RCNN pre-trained weight for the Kitti Dataset [`[model-50M]`](https://drive.google.com/file/d/1lIOq4Hxr0W3qsX83ilQv0nk1Cls6KAr-/view?usp=sharing).
 - Copy the weight to the checkpoints folder of the pcdet_ros2 package.
 

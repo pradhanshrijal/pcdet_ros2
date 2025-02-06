@@ -1,0 +1,59 @@
+# Run Docker Image (Execute in the parent directory)
+# xhost +local:docker
+# docker-compose --verbose --env-file docker_scripts/compose-file.env -f envs/pha-22/docker-compose.yaml up -d
+version: '3'
+
+services:
+  pcdet-user:
+    image: ${DOC_IMG}:${DOC_TAG}
+    build: 
+      context: ${PHA_HOME}
+      dockerfile: ${DOCKERFILE_PATH}
+      no_cache: true
+      args:
+        - IMAGE_NAME=${IMAGE_NAME}
+        - IMAGE_VERSION=${IMAGE_VERSION}
+        - IN_USERNAME=${IN_USERNAME}
+        - IN_CUDA_VERSION_NUMBER=${IN_CUDA_VERSION_NUMBER}
+        - UID=${UID_VAR}
+        - GID=${GID_VAR}
+        - PROJECT_NAME=${PROJECT_NAME}
+        - APT_GET_REQUIREMENTS_FILE=${APT_GET_REQUIREMENTS_FILE}
+        - PYTHON_REQUIREMENTS_FILE=${PYTHON_REQUIREMENTS_FILE}
+        - SCRIPT_REQUIREMENTS_FILE=${SCRIPT_REQUIREMENTS_FILE}
+        - IN_SSI_PATH=${IN_SSI_PATH}
+        - IN_SCRIPTS_PATH=${IN_SCRIPTS_PATH}
+        - USER_REQUIREMENTS_PATH=${USER_REQUIREMENTS_PATH}
+        - IN_ROS_VERSION=${IN_ROS_VERSION}
+    container_name: ${CONT_NAME}
+    env_file:
+      - ${PHA_ENV_FILE}.env
+    network_mode: host
+    runtime: nvidia
+    privileged: true
+    environment:
+      - DISPLAY=${DISPLAY_VAR}
+      - NVIDIA_VISIBLE_DEVICES=${GPU_DEVICES}
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - QT_X11_NO_MITSHM=1
+    shm_size: ${SHM_SIZE}
+    deploy:
+      resources:
+        limits:
+          cpus: ${CPU_LIM}
+          memory: ${CPU_MEM_LIM}
+        reservations:
+          cpus: ${CPU_RES}
+          memory: ${CPU_MEM_RES}
+          devices:
+            - driver: nvidia
+              device_ids: ['1']
+              capabilities: [gpu]
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ${SSI_PATH}:${IN_SSI_PATH}
+      - /media/${IN_USERNAME}:/media/${IN_USERNAME}
+      - /dev:/dev
+    tty: true
+    stdin_open: true
+    #entrypoint: [ "/bin/bash", "-c" ]
