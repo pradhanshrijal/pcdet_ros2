@@ -64,6 +64,7 @@ COPY ${USER_REQUIREMENTS_PATH}/${SCRIPT_REQUIREMENTS_FILE} ${IN_SCRIPTS_PATH}/tm
 ## Copy Softwares
 RUN mkdir -p /home/${IN_USERNAME}/${SOURCE_CODE_PATH}
 COPY ${SOURCE_CODE_PATH} /home/${IN_USERNAME}/${SOURCE_CODE_PATH}
+RUN ["/bin/bash", "-c", "sudo chown -R ${IN_USERNAME}:${IN_USERNAME} /home/${IN_USERNAME}"]
 ##
 
 # End - New User
